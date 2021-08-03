@@ -35,8 +35,8 @@ public final class Utils {
 
     public static String readFromDocx(String fileName) throws IOException, InvalidFormatException {
         InputStream stream = getInputStreamForFileName(fileName);
-        XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(stream));
-        XWPFWordExtractor extractor = new XWPFWordExtractor(xdoc);
+        XWPFDocument document = new XWPFDocument(OPCPackage.open(stream));
+        XWPFWordExtractor extractor = new XWPFWordExtractor(document);
         return extractor.getText().trim();
     }
 
@@ -67,7 +67,7 @@ public final class Utils {
 
     public static String readFromZip(String fileName, String fileNameInZip, String password) throws URISyntaxException, IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        File file = new File(requireNonNull(classLoader.getResource(fileName)).toURI());
+        File file = new File(requireNonNull(classLoader.getResource(fileName), "Не найден файл " + fileName).toURI());
         ZipFile zipFile = new ZipFile(file, password.toCharArray());
 
         FileHeader fileHeader = zipFile.getFileHeader(fileNameInZip);
